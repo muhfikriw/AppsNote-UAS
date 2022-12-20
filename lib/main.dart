@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:noteapps/login/loginscreen.dart';
+import 'package:noteapps/login/main_page.dart';
 import 'package:noteapps/screens/home_screen.dart';
 
 Future<void> main() async {
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: mainPage(),
     );
   }
 }

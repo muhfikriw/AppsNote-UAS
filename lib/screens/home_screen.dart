@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:noteapps/screens/note_editor.dart';
@@ -14,15 +15,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppStyle.mainColor,
       appBar: AppBar(
         elevation: 0.0,
-        title: Text("Notes"),
+        title: Text("Notes",
+            style: TextStyle(
+              color: Color.fromARGB(255, 19, 16, 58),
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+            )),
         centerTitle: true,
-        backgroundColor: AppStyle.mainColor,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.logout,
+              color: Color.fromARGB(255, 24, 24, 24),
+            ),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+          )
+        ],
+        flexibleSpace: ClipRRect(
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
+          child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("images/bg.jpg"), fit: BoxFit.fill)),
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80))),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,12 +57,15 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Catatanmu",
-              style: GoogleFonts.roboto(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 20),
+              child: Text(
+                "Catatanmu",
+                style: GoogleFonts.roboto(
+                  color: Color.fromARGB(255, 51, 51, 51),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
               ),
             ),
             SizedBox(
@@ -78,14 +108,26 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (content) => NoteEditorScren()));
         },
-        label: Text("Add Note"),
-        icon: Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+          color: Color.fromARGB(255, 152, 192, 238),
+          shape: CircularNotchedRectangle(),
+          notchMargin: 8,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+              IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
+            ],
+          )),
     );
   }
 }
